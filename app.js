@@ -86,6 +86,8 @@ class VelocityOdysseyApp {
     this.modalRevCarName = document.getElementById('modalRevCarName');
     this.modalPrevBtn = document.getElementById('modalPrevBtn');
     this.modalNextBtn = document.getElementById('modalNextBtn');
+    this.modalRealImg = document.getElementById('modalRealImg');
+    this.modalPhotoYear = document.getElementById('modalPhotoYear');
 
     // Cruise Buttons
     this.cruiseStatusDot = document.getElementById('cruiseStatusDot');
@@ -144,7 +146,33 @@ class VelocityOdysseyApp {
 
       station.innerHTML = `
         <div class="station-visual">
-          ${generateCarSVG(model)}
+          <!-- View Switcher: Real Photo vs Aero Blueprint -->
+          <div class="visual-view-toggle">
+            <button class="view-pill active" data-action="toggle-view" data-target="photo" title="Real Authentic Photo">
+              <span>📷 REAL PHOTO</span>
+            </button>
+            <button class="view-pill" data-action="toggle-view" data-target="blueprint" title="Vector Aero Blueprint">
+              <span>📐 BLUEPRINT</span>
+            </button>
+          </div>
+
+          <!-- Real Photographic Stage (Active by default) -->
+          <div class="car-photo-stage">
+            <div class="photo-glow-aura" style="--zone-color: ${this.getZoneColorForSpeed(model.topSpeedKm)}"></div>
+            <div class="real-photo-frame">
+              <img src="${model.image}" alt="${model.name}" class="real-car-img" loading="lazy" />
+              <div class="photo-card-tag">
+                <span class="auth-pill">AUTHENTIC ARCHIVE</span>
+                <span class="auth-year">${model.year}</span>
+              </div>
+            </div>
+            <div class="photo-road-reflection"></div>
+          </div>
+
+          <!-- Vector Blueprint Stage (Hidden until toggled) -->
+          <div class="car-blueprint-stage" style="display: none;">
+            ${generateCarSVG(model)}
+          </div>
         </div>
         <div class="station-info">
           <div class="station-meta-top">
@@ -270,9 +298,30 @@ class VelocityOdysseyApp {
 
     // Vehicle Station Action Clicks (Delegation)
     this.trackContainer.addEventListener('click', (e) => {
+      const toggleBtn = e.target.closest('[data-action="toggle-view"]');
       const inspectBtn = e.target.closest('[data-action="inspect"]');
       const revBtn = e.target.closest('[data-action="rev"]');
       const station = e.target.closest('.vehicle-station');
+
+      if (toggleBtn) {
+        e.stopPropagation();
+        const parentStation = toggleBtn.closest('.vehicle-station');
+        const target = toggleBtn.getAttribute('data-target');
+        const photoStage = parentStation.querySelector('.car-photo-stage');
+        const blueprintStage = parentStation.querySelector('.car-blueprint-stage');
+
+        parentStation.querySelectorAll('.view-pill').forEach(btn => btn.classList.remove('active'));
+        toggleBtn.classList.add('active');
+
+        if (target === 'photo') {
+          photoStage.style.display = 'flex';
+          blueprintStage.style.display = 'none';
+        } else {
+          photoStage.style.display = 'none';
+          blueprintStage.style.display = 'flex';
+        }
+        return;
+      }
 
       if (revBtn) {
         e.stopPropagation();
@@ -425,6 +474,14 @@ class VelocityOdysseyApp {
     this.modalDescription.textContent = model.description;
     this.modalTrivia.textContent = model.trivia;
 
+    if (this.modalRealImg) {
+      this.modalRealImg.src = model.image;
+      this.modalRealImg.alt = model.name;
+    }
+    if (this.modalPhotoYear) {
+      this.modalPhotoYear.textContent = `${model.year} • ${model.category.toUpperCase()}`;
+    }
+
     this.updateModalTelemetry(model);
     this.renderModalColorChips(model);
     this.updateModalVectorStage();
@@ -432,6 +489,11 @@ class VelocityOdysseyApp {
     this.modal.classList.add('open');
     this.modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
+  }
+
+  getZoneColorForSpeed(speedKmH) {
+    const zone = this.zones.find(z => speedKmH >= z.speedRange[0] && speedKmH <= z.speedRange[1]);
+    return zone ? zone.accentColor : '#0066B1';
   }
 
   closeInspectionModal() {

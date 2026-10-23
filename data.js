@@ -1,6 +1,7 @@
 /**
  * BMW Velocity Odyssey - Comprehensive Vehicle Database
- * Authentic specifications, historical notes, colors, and audio profiles
+ * Authentic specifications, historical notes, colors, audio profiles,
+ * and authentic high-resolution photographic images for every model.
  */
 
 export const SPEED_ZONES = [
@@ -58,14 +59,14 @@ export const BMW_MODELS = [
     year: 1928,
     topSpeedKm: 75,
     topSpeedMph: 47,
-    acceleration: 30.0, // 0-60 km/h
+    acceleration: 30.0,
     powerHp: 15,
     torqueNm: 36,
     engine: "743cc Side-valve Inline-4",
     weightKg: 460,
     category: "Heritage",
     zoneId: "zone-pioneers",
-    image: "assets/images/bmw_e30_m3_1792745501797.jpg",
+    image: "assets/images/cars/dixi-315.jpg",
     svgType: "vintage",
     colors: [
       { name: "Vintage Maroon", hex: "#4a121a" },
@@ -91,7 +92,7 @@ export const BMW_MODELS = [
     weightKg: 830,
     category: "Heritage",
     zoneId: "zone-pioneers",
-    image: "assets/images/bmw_e30_m3_1792745501797.jpg",
+    image: "assets/images/cars/bmw-328.jpg",
     svgType: "classic-roadster",
     colors: [
       { name: "Mille Miglia Silver", hex: "#cfd3d8" },
@@ -117,7 +118,7 @@ export const BMW_MODELS = [
     weightKg: 1330,
     category: "Heritage",
     zoneId: "zone-pioneers",
-    image: "assets/images/bmw_e30_m3_1792745501797.jpg",
+    image: "assets/images/cars/bmw-507.jpg",
     svgType: "luxury-roadster",
     colors: [
       { name: "Feather White", hex: "#f8f9fa" },
@@ -143,7 +144,7 @@ export const BMW_MODELS = [
     weightKg: 1080,
     category: "Motorsport",
     zoneId: "zone-genesis",
-    image: "assets/images/bmw_e30_m3_1792745501797.jpg",
+    image: "assets/images/cars/bmw-2002-turbo.jpg",
     svgType: "coupe-turbo",
     colors: [
       { name: "Chamonix White", hex: "#e8ecef" },
@@ -168,7 +169,7 @@ export const BMW_MODELS = [
     weightKg: 1200,
     category: "Motorsport",
     zoneId: "zone-genesis",
-    image: "assets/images/bmw_e30_m3_1792745501797.jpg",
+    image: "assets/images/cars/bmw-e30-m3.jpg",
     svgType: "box-flare-m3",
     colors: [
       { name: "Henna Red", hex: "#c9241b" },
@@ -195,7 +196,7 @@ export const BMW_MODELS = [
     weightKg: 1865,
     category: "Heritage",
     zoneId: "zone-genesis",
-    image: "assets/images/bmw_m_hero_1792745453517.jpg",
+    image: "assets/images/cars/bmw-850csi.jpg",
     svgType: "wedge-v12",
     colors: [
       { name: "Cosmos Black", hex: "#0b0c10" },
@@ -222,7 +223,7 @@ export const BMW_MODELS = [
     weightKg: 1300,
     category: "Motorsport",
     zoneId: "zone-genesis",
-    image: "assets/images/bmw_m_hero_1792745453517.jpg",
+    image: "assets/images/cars/bmw-m1-e26.jpg",
     svgType: "mid-engine-supercar",
     colors: [
       { name: "Inka Orange", hex: "#f35a09" },
@@ -249,7 +250,7 @@ export const BMW_MODELS = [
     weightKg: 1550,
     category: "Motorsport",
     zoneId: "zone-na-legends",
-    image: "assets/images/bmw_m_hero_1792745453517.jpg",
+    image: "assets/images/cars/bmw-m2-cs.jpg",
     svgType: "compact-beast",
     colors: [
       { name: "Misano Blue Metallic", hex: "#0062a8" },
@@ -276,7 +277,7 @@ export const BMW_MODELS = [
     weightKg: 1100,
     category: "Motorsport",
     zoneId: "zone-na-legends",
-    image: "assets/images/bmw_m_hero_1792745453517.jpg",
+    image: "assets/images/cars/bmw-e46-m3-gtr.jpg",
     svgType: "race-gtr",
     colors: [
       { name: "Silver & Blue Racing Livery", hex: "#9da6af" },
@@ -302,7 +303,7 @@ export const BMW_MODELS = [
     weightKg: 2710,
     category: "Motorsport",
     zoneId: "zone-na-legends",
-    image: "assets/images/bmw_m_hero_1792745453517.jpg",
+    image: "assets/images/cars/bmw-xm-label-red.jpg",
     svgType: "hyper-sav",
     colors: [
       { name: "BMW Individual Frozen Carbon Black", hex: "#1a1b1e" },
@@ -327,7 +328,7 @@ export const BMW_MODELS = [
     weightKg: 1795,
     category: "Motorsport",
     zoneId: "zone-na-legends",
-    image: "assets/images/bmw_m_hero_1792745453517.jpg",
+    image: "assets/images/cars/bmw-e39-m5.jpg",
     svgType: "sedan-v8",
     colors: [
       { name: "Le Mans Blue Metallic", hex: "#17347a" },
@@ -354,7 +355,7 @@ export const BMW_MODELS = [
     weightKg: 1550,
     category: "Concept",
     zoneId: "zone-na-legends",
-    image: "assets/images/bmw_vision_m_1792745524936.jpg",
+    image: "assets/images/cars/bmw-vision-m-next.jpg",
     svgType: "hyper-concept",
     colors: [
       { name: "Thrilling Orange & Cast Silver", hex: "#ff5000" },
@@ -379,7 +380,7 @@ export const BMW_MODELS = [
     weightKg: 1830,
     category: "Motorsport",
     zoneId: "zone-na-legends",
-    image: "assets/images/bmw_m_hero_1792745453517.jpg",
+    image: "assets/images/cars/bmw-e60-m5.jpg",
     svgType: "v10-sedan",
     colors: [
       { name: "Interlagos Blue", hex: "#0b2b68" },
@@ -406,7 +407,7 @@ export const BMW_MODELS = [
     weightKg: 1825,
     category: "Motorsport",
     zoneId: "zone-turbopower",
-    image: "assets/images/bmw_m_hero_1792745453517.jpg",
+    image: "assets/images/cars/bmw-m5-cs.jpg",
     svgType: "cs-super-sedan",
     colors: [
       { name: "Frozen Deep Green Metallic", hex: "#263e32" },
@@ -432,7 +433,7 @@ export const BMW_MODELS = [
     weightKg: 1980,
     category: "Motorsport",
     zoneId: "zone-turbopower",
-    image: "assets/images/bmw_m_hero_1792745453517.jpg",
+    image: "assets/images/cars/bmw-m8-competition.jpg",
     svgType: "grand-coupe",
     colors: [
       { name: "Marina Bay Blue", hex: "#0b4ea2" },
@@ -458,7 +459,7 @@ export const BMW_MODELS = [
     weightKg: 1625,
     category: "Motorsport",
     zoneId: "zone-turbopower",
-    image: "assets/images/bmw_m_hero_1792745453517.jpg",
+    image: "assets/images/cars/bmw-m4-csl.jpg",
     svgType: "csl-track-beast",
     colors: [
       { name: "Frozen Brooklyn Grey", hex: "#7f8691" },
@@ -484,7 +485,7 @@ export const BMW_MODELS = [
     weightKg: 1030,
     category: "Motorsport",
     zoneId: "zone-hyper-vision",
-    image: "assets/images/bmw_vision_m_1792745524936.jpg",
+    image: "assets/images/cars/bmw-m-hybrid-v8.jpg",
     svgType: "le-mans-hypercar",
     colors: [
       { name: "M Works Motorsport Camo", hex: "#0066b1" },
@@ -509,7 +510,7 @@ export const BMW_MODELS = [
     weightKg: 1850,
     category: "Concept",
     zoneId: "zone-hyper-vision",
-    image: "assets/images/bmw_vision_m_1792745524936.jpg",
+    image: "assets/images/cars/bmw-vision-neue-klasse.jpg",
     svgType: "neue-klasse-future",
     colors: [
       { name: "Luminous Coral Silver", hex: "#e0dcd9" },

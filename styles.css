@@ -879,15 +879,158 @@ body.dark-theme {
   box-shadow: 0 30px 70px rgba(0, 0, 0, 0.85), 0 0 30px rgba(0, 240, 255, 0.2);
 }
 
-/* Left / Main: The Vector Vehicle Stage */
+/* Left / Main: The Vector & Photographic Vehicle Stage */
 .station-visual {
   position: relative;
   width: 100%;
-  min-height: 260px;
+  min-height: 300px;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: visible;
+}
+
+/* View Toggle Pill Button */
+.visual-view-toggle {
+  position: absolute;
+  top: -12px;
+  right: 12px;
+  z-index: 15;
+  display: flex;
+  gap: 6px;
+  background: rgba(14, 17, 24, 0.94);
+  padding: 4px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+}
+
+.view-pill {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 11px;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: all var(--transition-fast);
+}
+
+.view-pill:hover {
+  color: #fff;
+}
+
+.view-pill.active {
+  background: var(--m-light-blue);
+  color: #fff;
+  box-shadow: 0 0 10px rgba(0, 102, 177, 0.6);
+}
+
+/* Real Photographic Stage */
+.car-photo-stage {
+  position: relative;
+  width: 100%;
+  max-width: 620px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  animation: chassisBob 3.5s infinite ease-in-out;
+}
+
+.photo-glow-aura {
+  position: absolute;
+  width: 90%;
+  height: 90%;
+  background: radial-gradient(ellipse at center, var(--zone-color, #0066B1) 0%, transparent 70%);
+  opacity: 0.22;
+  filter: blur(35px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.real-photo-frame {
+  position: relative;
+  width: 100%;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.04);
+  background: #090b10;
+  z-index: 2;
+  transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.real-photo-frame:hover {
+  transform: scale(1.02);
+  border-color: var(--m-cyan);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95), 0 0 25px rgba(0, 240, 255, 0.25);
+}
+
+.real-car-img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s ease;
+}
+
+.real-photo-frame:hover .real-car-img {
+  transform: scale(1.04);
+}
+
+.photo-card-tag {
+  position: absolute;
+  bottom: 12px;
+  left: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 3;
+}
+
+.auth-pill {
+  font-family: var(--font-display);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  color: var(--m-cyan);
+  background: rgba(6, 7, 9, 0.85);
+  backdrop-filter: blur(8px);
+  padding: 3px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 240, 255, 0.3);
+}
+
+.auth-year {
+  font-family: var(--font-tech);
+  font-size: 10px;
+  font-weight: 700;
+  color: #cbd5e1;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+
+.photo-road-reflection {
+  width: 85%;
+  height: 14px;
+  background: radial-gradient(ellipse at center, rgba(0, 102, 177, 0.25) 0%, transparent 75%);
+  filter: blur(8px);
+  margin-top: -6px;
+  z-index: 1;
+}
+
+.car-blueprint-stage {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* The Continuous Moving Vector Stage */
@@ -1423,6 +1566,67 @@ body.dark-theme {
   font-size: 10px;
   font-weight: 700;
   color: var(--m-cyan);
+}
+
+/* Modal Authentic Photo Card */
+.modal-real-photo-card {
+  position: relative;
+  width: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  margin-bottom: 24px;
+  background: #08090d;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.9);
+}
+
+.modal-real-img {
+  width: 100%;
+  height: 340px;
+  object-fit: cover;
+  display: block;
+}
+
+.modal-photo-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px 24px;
+  background: linear-gradient(0deg, rgba(6, 7, 9, 0.95) 20%, transparent 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-photo-badge {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: var(--m-cyan);
+}
+
+.modal-photo-year {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 800;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+.modal-showcase-header {
+  margin-bottom: 14px;
+}
+
+.stage-tag {
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: #94a3b8;
 }
 
 /* Modal Showcase Stage */
