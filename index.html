@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BMW Velocity Odyssey | Continuous Motion Speed Experience</title>
+  <meta name="description" content="An interactive infinite dark highway journey through BMW speed, sound, and heritage (0 to 420+ km/h) inspired by Neal.fun's Deep Sea.">
+  <meta name="theme-color" content="#060709">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dark-theme">
+  <!-- Continuous Moving Highway Canvas Layer -->
+  <canvas id="highwayCanvas"></canvas>
+
+  <!-- Ambient Light Vignette & Scanlines -->
+  <div class="ambient-vignette"></div>
+  <div class="cyber-scanlines"></div>
+
+  <!-- FIXED COCKPIT HUD (Top / Floating Telemetry) -->
+  <header class="cockpit-hud" id="cockpitHud">
+    <div class="hud-left">
+      <div class="brand-badge">
+        <svg class="bmw-roundel" viewBox="0 0 40 40" width="34" height="34">
+          <circle cx="20" cy="20" r="19" fill="#111" stroke="#4a5060" stroke-width="1.5" />
+          <path d="M7 20 A13 13 0 0 1 20 7 L20 20 Z" fill="#0066B1" />
+          <path d="M20 33 A13 13 0 0 1 33 20 L20 20 Z" fill="#0066B1" />
+          <path d="M20 7 A13 13 0 0 1 33 20 L20 20 Z" fill="#ffffff" />
+          <path d="M7 20 A13 13 0 0 1 20 33 L20 20 Z" fill="#ffffff" />
+          <circle cx="20" cy="20" r="13" fill="none" stroke="#222" stroke-width="0.8" />
+          <text x="20" y="5.8" fill="#fff" font-size="3.2" font-family="'Orbitron', sans-serif" font-weight="900" text-anchor="middle">BMW</text>
+        </svg>
+        <div class="brand-text">
+          <span class="m-stripes">
+            <span class="stripe s-cyan"></span>
+            <span class="stripe s-blue"></span>
+            <span class="stripe s-red"></span>
+          </span>
+          <span class="hud-title">VELOCITY ODYSSEY</span>
+        </div>
+      </div>
+      
+      <!-- Current Zone & Era Indicator -->
+      <div class="zone-badge" id="currentZoneBadge">
+        <span class="zone-dot"></span>
+        <span class="zone-title" id="zoneTitleText">ZONE 1: DAWN OF POWER</span>
+        <span class="zone-era" id="zoneEraText">1928 - 1960</span>
+      </div>
+    </div>
+
+    <!-- Center Live Telemetry Gauges -->
+    <div class="hud-center">
+      <!-- Speedometer Readout -->
+      <div class="speed-cluster">
+        <div class="speed-value" id="hudSpeedDisplay">0</div>
+        <div class="speed-meta">
+          <button class="unit-toggle" id="unitToggleBtn" title="Switch KM/H and MPH">
+            <span class="active-unit" id="unitLabel">KM/H</span>
+          </button>
+          <span class="odometer-label" id="hudOdometerDisplay">0.0 KM</span>
+        </div>
+      </div>
+
+      <!-- Live Tachometer & Shift Lights -->
+      <div class="tacho-cluster">
+        <div class="shift-lights" id="shiftLights">
+          <span class="led green"></span>
+          <span class="led green"></span>
+          <span class="led orange"></span>
+          <span class="led orange"></span>
+          <span class="led red"></span>
+          <span class="led red blink"></span>
+        </div>
+        <div class="tacho-info">
+          <span class="gear-indicator" id="hudGearDisplay">1</span>
+          <span class="rpm-display" id="hudRpmDisplay">950 RPM</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- HUD Right Controls (Audio, Search, Auto-drive toggle) -->
+    <div class="hud-right">
+      <!-- Sound Engine Toggle -->
+      <div class="audio-control-cluster">
+        <button class="hud-btn audio-btn" id="audioToggleBtn" title="Toggle M Synthetic Engine Acoustics">
+          <svg class="audio-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path class="sound-wave w1" d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+            <path class="sound-wave w2" d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+          </svg>
+          <span class="audio-text" id="audioStatusText">M SOUND: OFF</span>
+          <!-- Live Audio Spectrum Visualizer -->
+          <div class="audio-eq" id="audioEq">
+            <span class="eq-bar"></span>
+            <span class="eq-bar"></span>
+            <span class="eq-bar"></span>
+            <span class="eq-bar"></span>
+          </div>
+        </button>
+      </div>
+
+      <!-- Quick Throttle Blip / Rev Button -->
+      <button class="hud-btn rev-btn" id="hudRevBtn" title="Rev Engine (or press Spacebar)">
+        <span class="rev-pedal-icon">▲</span>
+        <span>REV</span>
+      </button>
+
+      <!-- Category Filter Dropdown / Search Trigger -->
+      <div class="filter-wrapper">
+        <select id="categoryFilter" class="hud-select" aria-label="Filter BMW Categories">
+          <option value="all">ALL CARS (18)</option>
+          <option value="Motorsport">M DIVISION</option>
+          <option value="Heritage">HERITAGE CLASSICS</option>
+          <option value="Concept">CONCEPTS & FUTURE</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <!-- DEEP SEA STYLE RIGHT-SIDE ELEVATOR / SCRUBBER -->
+  <aside class="speed-elevator" id="speedElevator" aria-label="Speed Navigation Scrubber">
+    <div class="elevator-track">
+      <div class="elevator-fill" id="elevatorFill"></div>
+      <div class="elevator-car-indicator" id="elevatorCarIndicator">
+        <span class="needle-tip">◀</span>
+        <span class="needle-speed" id="elevatorSpeedTooltip">0 km/h</span>
+      </div>
+      <!-- Markers dynamically populated in app.js -->
+      <div class="elevator-stops" id="elevatorStops"></div>
+    </div>
+  </aside>
+
+  <!-- MAIN SCROLL JOURNEY CONTAINER (Like Neal.fun's Deep Sea) -->
+  <main class="journey-container" id="journeyContainer">
+
+    <!-- STARTING GRID HERO SECTION -->
+    <section class="journey-hero" id="heroSection">
+      <div class="hero-content">
+        <div class="hero-eyebrow">
+          <span class="badge-m">BMW M HERITAGE & FUTURE</span>
+          <span class="badge-tag">AUTONOMOUS MOTION EXPEDITION</span>
+        </div>
+        <h1 class="hero-title">
+          THE CONTINUOUS<br>
+          <span class="glow-text">VELOCITY ODYSSEY</span>
+        </h1>
+        <p class="hero-desc">
+          An infinite dark descent into the ultimate driving machines. From the 75 km/h 1928 Dixi 
+          to the 400+ km/h electrified hypercar horizon. Scroll down to accelerate or engage cruise control.
+        </p>
+
+        <!-- Featured Spotlight Hero Card -->
+        <div class="hero-spotlight-card">
+          <div class="spotlight-image-container">
+            <img src="assets/images/bmw_m_hero_1792745453517.jpg" alt="BMW M High Speed Autobahn" class="spotlight-img">
+            <div class="spotlight-overlay">
+              <span class="spotlight-pill">LIVE CHRONOMETER</span>
+              <h3>18 LEGENDARY VEHICLES AHEAD</h3>
+              <p>Experience continuous chassis motion, spinning wheels, laserlight beams, and procedural engine acoustics.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-actions">
+          <button class="primary-btn pulse-glow" id="startJourneyBtn">
+            <span>START EXPEDITION</span>
+            <span class="btn-arrow">▼</span>
+          </button>
+          <button class="secondary-btn" id="heroAutoCruiseBtn">
+            <span>ENGAGE AUTO-DRIVE</span>
+            <span class="cruise-icon">⚡</span>
+          </button>
+        </div>
+
+        <div class="scroll-prompt">
+          <div class="scroll-mouse">
+            <div class="wheel"></div>
+          </div>
+          <span>SCROLL DOWN TO ACCELERATE THROUGH SPEED & TIME</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- VEHICLES EXPEDITION HIGHWAY TRACK -->
+    <div class="highway-track" id="highwayTrack">
+      <!-- Generated dynamically by app.js: Speed milestones, Zone dividers, and Vehicle Stations -->
+    </div>
+
+    <!-- TERMINAL SECTOR (Hyper-Horizon Finale) -->
+    <section class="journey-terminal" id="terminalSection">
+      <div class="terminal-content">
+        <div class="terminal-badge">APEX REACHED • 420+ KM/H</div>
+        <h2>THE HORIZON OF THE ULTIMATE DRIVING MACHINE</h2>
+        <p>
+          You have traversed nearly a century of relentless engineering ambition. From lightweight pre-war roadsters 
+          to screamers at 8,250 RPM, to the electrified dawn of Neue Klasse.
+        </p>
+        <div class="terminal-image-container">
+          <img src="assets/images/bmw_vision_m_1792745524936.jpg" alt="BMW Vision M NEXT Future Horizon" class="terminal-img">
+        </div>
+        <div class="terminal-actions">
+          <button class="primary-btn" id="rewindToStartBtn">
+            <span>REWIND TO START (0 KM/H)</span>
+            <span class="btn-arrow">▲</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- BOTTOM FLOATING DOCK: AUTO-DRIVE & CRUISE CONTROL (Like deep sea's playback bar) -->
+  <footer class="cruise-dock" id="cruiseDock">
+    <div class="cruise-controls">
+      <div class="dock-label">
+        <span class="cruise-status-dot" id="cruiseStatusDot"></span>
+        <span class="dock-title">AUTOPILOT / AUTO-DRIVE</span>
+      </div>
+
+      <div class="cruise-buttons">
+        <button class="cruise-btn active" data-mode="off" id="cruiseOffBtn">MANUAL</button>
+        <button class="cruise-btn" data-mode="cruise" id="cruiseLowBtn">CRUISE 60</button>
+        <button class="cruise-btn" data-mode="sport" id="cruiseSportBtn">SPORT 180</button>
+        <button class="cruise-btn" data-mode="autobahn" id="cruiseMaxBtn">AUTOBAHN 320</button>
+      </div>
+
+      <div class="keyboard-hints">
+        <span><kbd>SPACE</kbd> Rev Engine</span>
+        <span><kbd>↑</kbd> <kbd>↓</kbd> Drive</span>
+        <span><kbd>C</kbd> Cruise</span>
+        <span><kbd>M</kbd> Sound</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- TECHNICAL BLUEPRINT INSPECTION MODAL (Drawer for deep specs) -->
+  <div class="inspection-modal" id="inspectionModal" aria-hidden="true" role="dialog">
+    <div class="modal-backdrop" id="modalBackdrop"></div>
+    <div class="modal-container">
+      <button class="modal-close-btn" id="modalCloseBtn" aria-label="Close modal">✕</button>
+
+      <div class="modal-header">
+        <div class="modal-titles">
+          <span class="modal-category-tag" id="modalCategoryTag">MOTORSPORT</span>
+          <h2 class="modal-car-name" id="modalCarName">BMW E30 M3</h2>
+          <span class="modal-tagline" id="modalTagline">The Touring Car Champion</span>
+        </div>
+        <div class="modal-speed-box">
+          <span class="speed-num" id="modalSpeedNum">235</span>
+          <span class="speed-unit" id="modalSpeedUnit">KM/H TOP SPEED</span>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <!-- Interactive 3D Showcase Stage -->
+        <div class="modal-showcase">
+          <div class="modal-vector-stage" id="modalVectorStage"></div>
+          
+          <!-- Live Color Customizer -->
+          <div class="color-picker-box">
+            <span class="color-picker-title">GENUINE BMW FACTORY FINISH:</span>
+            <div class="color-chips" id="modalColorChips"></div>
+          </div>
+        </div>
+
+        <!-- Technical Telemetry Matrix -->
+        <div class="specs-grid">
+          <div class="spec-card">
+            <span class="spec-label">HORSEPOWER</span>
+            <span class="spec-value" id="specHp">200 HP</span>
+          </div>
+          <div class="spec-card">
+            <span class="spec-label">TORQUE</span>
+            <span class="spec-value" id="specTorque">240 Nm</span>
+          </div>
+          <div class="spec-card">
+            <span class="spec-label">0-100 KM/H</span>
+            <span class="spec-value" id="specAccel">6.5 sec</span>
+          </div>
+          <div class="spec-card">
+            <span class="spec-label">CURB WEIGHT</span>
+            <span class="spec-value" id="specWeight">1,200 kg</span>
+          </div>
+          <div class="spec-card full-width">
+            <span class="spec-label">POWERTRAIN ARCHITECTURE</span>
+            <span class="spec-value" id="specEngine">2.3L S14 Naturally Aspirated Inline-4</span>
+          </div>
+        </div>
+
+        <!-- Historical Notes & Engineering Trivia -->
+        <div class="modal-story">
+          <h3>ENGINEERING DOSSIER</h3>
+          <p id="modalDescription"></p>
+          <div class="trivia-quote">
+            <span class="quote-icon">❝</span>
+            <p id="modalTrivia"></p>
+          </div>
+        </div>
+
+        <!-- Interactive Audio Rev Stage inside Modal -->
+        <div class="modal-rev-bar">
+          <button class="primary-btn rev-large-btn" id="modalRevEngineBtn">
+            <span class="pedal-icon">▲</span>
+            <span>REV THIS ENGINE (<span id="modalRevCarName">E30 M3</span>)</span>
+          </button>
+          <div class="modal-nav-arrows">
+            <button class="modal-nav-btn" id="modalPrevBtn" title="Previous model">◀ PREV</button>
+            <button class="modal-nav-btn" id="modalNextBtn" title="Next model">NEXT ▶</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>
