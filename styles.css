@@ -878,19 +878,20 @@ body.dark-theme {
   transform: translateY(-4px);
 }
 
-/* Left / Main: Floating Car Stage (Completely Free, No Box) */
+/* Left / Main: 3D Floating Car Stage with Curved Borders & Dynamic Perspective */
 .station-visual {
   position: relative;
   width: 100%;
-  min-height: 320px;
+  min-height: 350px;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: visible;
-  perspective: 1200px;
+  perspective: 1400px;
+  transform-style: preserve-3d;
 }
 
-/* Continuous Floating Levitation Stage */
+/* Continuous 3D Floating Stage Container */
 .car-floating-stage {
   position: relative;
   width: 100%;
@@ -899,30 +900,10 @@ body.dark-theme {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  animation: carFloatingLevitate 4.5s infinite ease-in-out;
   transform-style: preserve-3d;
 }
 
-@keyframes carFloatingLevitate {
-  0%, 100% {
-    transform: translateY(0px) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-16px) rotate(-0.6deg);
-  }
-}
-
-.floating-aura {
-  position: absolute;
-  width: 95%;
-  height: 90%;
-  background: radial-gradient(ellipse at center, var(--zone-color, #0066B1) 0%, transparent 68%);
-  opacity: 0.26;
-  filter: blur(40px);
-  pointer-events: none;
-  z-index: 1;
-}
-
+/* 3D Floating Wrapper with Keyframe Pitch & Yaw */
 .floating-car-wrapper {
   position: relative;
   width: 100%;
@@ -930,54 +911,175 @@ body.dark-theme {
   align-items: center;
   justify-content: center;
   z-index: 2;
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-style: preserve-3d;
+  animation: carFloatingLevitate3D 5.5s infinite ease-in-out;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
 }
 
-.floating-car-img {
+.vehicle-station.alt-layout .floating-car-wrapper {
+  animation: carFloatingLevitate3DAlt 5.5s infinite ease-in-out;
+}
+
+@keyframes carFloatingLevitate3D {
+  0%, 100% {
+    transform: perspective(1200px) rotateY(-8deg) rotateX(4.5deg) translateY(0px) translateZ(0px);
+  }
+  50% {
+    transform: perspective(1200px) rotateY(-4deg) rotateX(1deg) translateY(-16px) translateZ(28px);
+  }
+}
+
+@keyframes carFloatingLevitate3DAlt {
+  0%, 100% {
+    transform: perspective(1200px) rotateY(8deg) rotateX(4.5deg) translateY(0px) translateZ(0px);
+  }
+  50% {
+    transform: perspective(1200px) rotateY(4deg) rotateX(1deg) translateY(-16px) translateZ(28px);
+  }
+}
+
+/* 3D Curved Showcase Card (Curved Borders & 3D Lighting) */
+.car-3d-card {
+  position: relative;
   width: 100%;
   max-width: 620px;
-  height: auto;
-  max-height: 330px;
-  object-fit: contain;
-  display: block;
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
+  border-radius: 28px;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transition: box-shadow 0.5s ease, border-color 0.5s ease, transform 0.5s ease;
+}
+
+/* For Real Automotive Photographs (Curved Borders & 3D Frame) */
+.car-3d-card.is-photo {
+  background: #06080d;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  outline: 1px solid rgba(0, 0, 0, 0.6);
+  box-shadow: 
+    0 12px 28px -6px rgba(0, 0, 0, 0.75),
+    0 28px 65px -12px rgba(0, 0, 0, 0.9),
+    0 45px 95px -18px rgba(0, 0, 0, 0.95),
+    0 0 45px var(--zone-color, rgba(0, 102, 177, 0.38)),
+    inset 0 2px 2px rgba(255, 255, 255, 0.4),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.7);
+}
+
+.vehicle-station:hover .car-3d-card.is-photo {
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 
+    0 16px 36px -6px rgba(0, 0, 0, 0.8),
+    0 36px 85px -12px rgba(0, 0, 0, 0.95),
+    0 60px 125px -20px rgba(0, 0, 0, 1),
+    0 0 65px var(--zone-color, #00f0ff),
+    inset 0 2.5px 2.5px rgba(255, 255, 255, 0.55),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* For Transparent Cutouts (like Dixi PNG) */
+.car-3d-card.is-cutout {
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+  background: transparent;
+  overflow: visible;
   filter: drop-shadow(0 25px 35px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 35px var(--zone-color, rgba(0, 102, 177, 0.4)));
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s ease;
 }
 
-/* For JPG photos, dissolve rectangular photo frame borders */
-.floating-car-img[src$=".jpg"], .floating-car-img[src$=".jpeg"] {
-  -webkit-mask-image: radial-gradient(ellipse 90% 80% at 50% 50%, black 50%, rgba(0, 0, 0, 0.85) 75%, transparent 100%);
-  mask-image: radial-gradient(ellipse 90% 80% at 50% 50%, black 50%, rgba(0, 0, 0, 0.85) 75%, transparent 100%);
-}
-
-.vehicle-station:hover .floating-car-img {
-  transform: scale(1.05);
+.vehicle-station:hover .car-3d-card.is-cutout {
   filter: drop-shadow(0 30px 45px rgba(0, 0, 0, 1)) drop-shadow(0 0 50px var(--zone-color, #00f0ff));
 }
 
-/* Dynamic Floating Ground Shadow */
-.floating-road-shadow {
-  width: 78%;
-  height: 22px;
-  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.95) 0%, rgba(0, 102, 177, 0.35) 45%, transparent 75%);
-  border-radius: 50%;
-  filter: blur(12px);
-  margin-top: -10px;
+/* The Automotive Photograph Image */
+.floating-car-img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-height: 340px;
+  object-fit: cover;
+  display: block;
+  border-radius: 26px;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.car-3d-card.is-cutout .floating-car-img {
+  aspect-ratio: auto;
+  height: auto;
+  max-height: 330px;
+  object-fit: contain;
+  border-radius: 0;
+}
+
+.vehicle-station:hover .car-3d-card .floating-car-img {
+  transform: scale(1.035);
+}
+
+/* 3D Diagonal Specular Glass Glare */
+.car-3d-glare {
+  position: absolute;
+  inset: 0;
+  border-radius: 26px;
+  background: linear-gradient(130deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.04) 34%, transparent 62%);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.car-3d-card.is-cutout .car-3d-glare {
+  display: none;
+}
+
+/* 3D Top Metallic Edge Highlight */
+.car-3d-reflection {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent 5%, rgba(255, 255, 255, 0.7) 40%, rgba(255, 255, 255, 0.7) 60%, transparent 95%);
+  pointer-events: none;
+  z-index: 4;
+}
+
+.car-3d-card.is-cutout .car-3d-reflection {
+  display: none;
+}
+
+/* Atmospheric Radiant Background Aura */
+.floating-aura {
+  position: absolute;
+  width: 95%;
+  height: 90%;
+  background: radial-gradient(ellipse at center, var(--zone-color, #0066B1) 0%, transparent 68%);
+  opacity: 0.28;
+  filter: blur(45px);
+  pointer-events: none;
   z-index: 1;
-  animation: shadowPulseLevitate 4.5s infinite ease-in-out;
+  transition: opacity 0.5s ease;
+}
+
+.vehicle-station:hover .floating-aura {
+  opacity: 0.45;
+}
+
+/* Dynamic Floating Ground Shadow in 3D */
+.floating-road-shadow {
+  width: 82%;
+  height: 24px;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.95) 0%, rgba(0, 102, 177, 0.45) 45%, transparent 75%);
+  border-radius: 50%;
+  filter: blur(14px);
+  margin-top: -12px;
+  z-index: 1;
+  transform: rotateX(75deg);
+  animation: shadowPulseLevitate 5.5s infinite ease-in-out;
 }
 
 @keyframes shadowPulseLevitate {
   0%, 100% {
-    transform: scale(1);
-    opacity: 0.85;
+    transform: rotateX(75deg) scale(1);
+    opacity: 0.9;
   }
   50% {
-    transform: scale(0.82);
-    opacity: 0.4;
+    transform: rotateX(75deg) scale(0.8);
+    opacity: 0.45;
   }
 }
 

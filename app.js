@@ -144,15 +144,20 @@ class VelocityOdysseyApp {
       const displaySpeed = this.unit === 'kmh' ? model.topSpeedKm : model.topSpeedMph;
       const unitText = this.unit === 'kmh' ? 'KM/H' : 'MPH';
 
+      const isCutout = model.image.endsWith('.png');
       station.innerHTML = `
         <div class="station-visual">
-          <!-- Floating Real Car Stage (No Box, Completely Free) -->
+          <!-- 3D Curved Floating Stage -->
           <div class="car-floating-stage" style="--zone-color: ${this.getZoneColorForSpeed(model.topSpeedKm)}">
             <div class="floating-aura"></div>
-            <div class="floating-car-wrapper">
-              <img src="${model.image}" alt="${model.name}" class="floating-car-img" loading="lazy" />
+            <div class="floating-car-wrapper" data-tilt-wrapper>
+              <div class="car-3d-card ${isCutout ? 'is-cutout' : 'is-photo'}">
+                <img src="${model.image}" alt="${model.name}" class="floating-car-img" loading="lazy" />
+                <div class="car-3d-glare"></div>
+                <div class="car-3d-reflection"></div>
+              </div>
             </div>
-            <!-- Dynamic Floating Ground Shadow -->
+            <!-- Dynamic Floating Ground Shadow in 3D -->
             <div class="floating-road-shadow"></div>
           </div>
         </div>
@@ -278,32 +283,38 @@ class VelocityOdysseyApp {
       });
     });
 
+    // 3D Interactive Mouse Parallax Tracking
+    this.trackContainer.addEventListener('mousemove', (e) => {
+      const visual = e.target.closest('.station-visual');
+      if (!visual) return;
+      const card = visual.querySelector('[data-tilt-wrapper]');
+      if (!card) return;
+      const rect = visual.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      const isAlt = visual.closest('.vehicle-station')?.classList.contains('alt-layout');
+      const baseRotY = isAlt ? 8 : -8;
+      const rotY = baseRotY + x * 22;
+      const rotX = -y * 18;
+      card.style.transform = `perspective(1200px) rotateY(${rotY.toFixed(2)}deg) rotateX(${rotX.toFixed(2)}deg) translateZ(35px) scale(1.025)`;
+      card.style.animationPlayState = 'paused';
+    });
+
+    this.trackContainer.addEventListener('mouseleave', (e) => {
+      const visual = e.target.closest('.station-visual');
+      if (!visual) return;
+      const card = visual.querySelector('[data-tilt-wrapper]');
+      if (card) {
+        card.style.transform = '';
+        card.style.animationPlayState = 'running';
+      }
+    }, true);
+
     // Vehicle Station Action Clicks (Delegation)
     this.trackContainer.addEventListener('click', (e) => {
-      const toggleBtn = e.target.closest('[data-action="toggle-view"]');
       const inspectBtn = e.target.closest('[data-action="inspect"]');
       const revBtn = e.target.closest('[data-action="rev"]');
       const station = e.target.closest('.vehicle-station');
-
-      if (toggleBtn) {
-        e.stopPropagation();
-        const parentStation = toggleBtn.closest('.vehicle-station');
-        const target = toggleBtn.getAttribute('data-target');
-        const photoStage = parentStation.querySelector('.car-photo-stage');
-        const blueprintStage = parentStation.querySelector('.car-blueprint-stage');
-
-        parentStation.querySelectorAll('.view-pill').forEach(btn => btn.classList.remove('active'));
-        toggleBtn.classList.add('active');
-
-        if (target === 'photo') {
-          photoStage.style.display = 'flex';
-          blueprintStage.style.display = 'none';
-        } else {
-          photoStage.style.display = 'none';
-          blueprintStage.style.display = 'flex';
-        }
-        return;
-      }
 
       if (revBtn) {
         e.stopPropagation();
