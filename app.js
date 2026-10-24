@@ -146,32 +146,14 @@ class VelocityOdysseyApp {
 
       station.innerHTML = `
         <div class="station-visual">
-          <!-- View Switcher: Real Photo vs Aero Blueprint -->
-          <div class="visual-view-toggle">
-            <button class="view-pill active" data-action="toggle-view" data-target="photo" title="Real Authentic Photo">
-              <span>📷 REAL PHOTO</span>
-            </button>
-            <button class="view-pill" data-action="toggle-view" data-target="blueprint" title="Vector Aero Blueprint">
-              <span>📐 BLUEPRINT</span>
-            </button>
-          </div>
-
-          <!-- Real Photographic Stage (Active by default) -->
-          <div class="car-photo-stage">
-            <div class="photo-glow-aura" style="--zone-color: ${this.getZoneColorForSpeed(model.topSpeedKm)}"></div>
-            <div class="real-photo-frame">
-              <img src="${model.image}" alt="${model.name}" class="real-car-img" loading="lazy" />
-              <div class="photo-card-tag">
-                <span class="auth-pill">AUTHENTIC ARCHIVE</span>
-                <span class="auth-year">${model.year}</span>
-              </div>
+          <!-- Floating Real Car Stage (No Box, Completely Free) -->
+          <div class="car-floating-stage" style="--zone-color: ${this.getZoneColorForSpeed(model.topSpeedKm)}">
+            <div class="floating-aura"></div>
+            <div class="floating-car-wrapper">
+              <img src="${model.image}" alt="${model.name}" class="floating-car-img" loading="lazy" />
             </div>
-            <div class="photo-road-reflection"></div>
-          </div>
-
-          <!-- Vector Blueprint Stage (Hidden until toggled) -->
-          <div class="car-blueprint-stage" style="display: none;">
-            ${generateCarSVG(model)}
+            <!-- Dynamic Floating Ground Shadow -->
+            <div class="floating-road-shadow"></div>
           </div>
         </div>
         <div class="station-info">
