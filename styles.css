@@ -940,11 +940,17 @@ body.dark-theme {
   max-height: 330px;
   object-fit: contain;
   display: block;
-  /* Feathered radial edge falloff: completely dissolves photo rectangle edges so the car floats naturally */
-  -webkit-mask-image: radial-gradient(ellipse 92% 82% at 50% 50%, black 50%, rgba(0, 0, 0, 0.85) 75%, transparent 100%);
-  mask-image: radial-gradient(ellipse 92% 82% at 50% 50%, black 50%, rgba(0, 0, 0, 0.85) 75%, transparent 100%);
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
   filter: drop-shadow(0 25px 35px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 35px var(--zone-color, rgba(0, 102, 177, 0.4)));
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s ease;
+}
+
+/* For JPG photos, dissolve rectangular photo frame borders */
+.floating-car-img[src$=".jpg"], .floating-car-img[src$=".jpeg"] {
+  -webkit-mask-image: radial-gradient(ellipse 90% 80% at 50% 50%, black 50%, rgba(0, 0, 0, 0.85) 75%, transparent 100%);
+  mask-image: radial-gradient(ellipse 90% 80% at 50% 50%, black 50%, rgba(0, 0, 0, 0.85) 75%, transparent 100%);
 }
 
 .vehicle-station:hover .floating-car-img {

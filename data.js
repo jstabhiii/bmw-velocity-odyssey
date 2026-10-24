@@ -66,7 +66,7 @@ export const BMW_MODELS = [
     weightKg: 460,
     category: "Heritage",
     zoneId: "zone-pioneers",
-    image: "assets/images/cars/dixi-315.jpg",
+    image: "assets/images/cars/dixi-315.png",
     svgType: "vintage",
     colors: [
       { name: "Vintage Maroon", hex: "#4a121a" },
